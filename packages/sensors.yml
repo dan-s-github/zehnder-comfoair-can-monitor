@@ -5,8 +5,12 @@
 
 binary_sensor:
   - platform: template
-    id: pdo_72     # PDO 72 (raw)
-    name: 'PDO 72'
+    id: manual_mode # PDO 56 (raw)
+    name: 'Manual Mode'
+    icon: mdi:check-circle
+  - platform: template
+    id: manual_mode_2 # PDO 72 (raw)
+    name: 'Manual Mode 2'
     icon: mdi:check-circle
   - platform: template
     id: pdo_115     # PDO 115 (raw)
@@ -20,14 +24,47 @@ binary_sensor:
     id: pdo_229     # PDO 229 (raw)
     name: 'PDO 229'
     icon: mdi:check-circle
+  - platform: template
+    id: pdo_386     # PDO 386 (raw)
+    name: 'PDO 386'
+    icon: mdi:check-circle
+  - platform: template
+    id: pdo_402     # PDO 402 (raw)
+    name: 'PDO 402'
+    icon: mdi:check-circle
+
+  - platform: template
+    id: comfocool_state # PDO 784
+    name: 'ComfoCool State'
+    icon: mdi:check-circle
+  - platform: template
+    id: pdo_785 # PDO 785 (raw)
+    name: 'PDO 785'
+    icon: mdi:check-circle
 
 sensor:
   - platform: template
-    id: comfortcontrol_mode # PDO 225 
-    name: 'Sensor based ventilation mode'
-    # accuracy_decimals: 0
-    # unit_of_measurement: '%'
-    # state_class: measurement
+    id: supply_fan_next_change_raw # PDO 86
+    name: 'supply_fan_next_change_raw'
+    accuracy_decimals: 0
+    device_class: duration
+    unit_of_measurement: 's'
+    internal: true
+    on_value:
+      then:
+        - lambda: id(supply_fan_next_change_in).publish_state(id(comfoair)->seconds_to_human_readable(x));
+
+  - platform: template
+    id: exhaust_fan_next_change_raw # PDO 87
+    name: 'exhaust_fan_next_change_raw'
+    accuracy_decimals: 0
+    device_class: duration
+    unit_of_measurement: 's'
+    internal: true
+    on_value:
+      then:
+        - lambda: id(exhaust_fan_next_change_in).publish_state(id(comfoair)->seconds_to_human_readable(x));
+
 
   - platform: template
     id: fan_speed_mode_modulated # PDO 226
@@ -46,8 +83,8 @@ sensor:
     state_class: measurement
 
   - platform: template
-    id: pdo_305 # PDO 305
-    name: 'PDO 305'
+    id: exhaust_fan_power # PDO 305
+    name: 'Exhaust fan power'
     accuracy_decimals: 0
     unit_of_measurement: 'W'
     device_class: power
@@ -55,8 +92,8 @@ sensor:
     filters: *throttle-filter
 
   - platform: template
-    id: pdo_306 # PDO 306
-    name: 'PDO 306'
+    id: supply_fan_power # PDO 306
+    name: 'Supply fan power'
     accuracy_decimals: 0
     unit_of_measurement: 'W'
     device_class: power
@@ -100,8 +137,24 @@ sensor:
     state_class: measurement
 
   - platform: template
+    id: pdo_384 # PDO 384
+    name: 'PDO 384'
+    filters: [multiply: 0.1]
+    # accuracy_decimals: 0
+    # unit_of_measurement: '%'
+    # state_class: measurement
+
+  - platform: template
     id: pdo_385 # PDO 385
     name: 'PDO 385'
+    # accuracy_decimals: 0
+    # unit_of_measurement: '%'
+    # state_class: measurement
+
+  - platform: template
+    id: pdo_400 # PDO 400
+    name: 'PDO 400'
+    filters: [multiply: 0.1]
     # accuracy_decimals: 0
     # unit_of_measurement: '%'
     # state_class: measurement
@@ -114,13 +167,93 @@ sensor:
     # state_class: measurement
 
   - platform: template
-    id: pdo_418 # PDO 418
-    name: 'PDO 418'
-    # accuracy_decimals: 0
-    # unit_of_measurement: '%'
-    # state_class: measurement
+    id: comfofond_temp_outdoor # PDO 416
+    name: 'ComfoFond Outdoor Air Temperature'
+    filters: [multiply: 0.1]
+    accuracy_decimals: 1
+    unit_of_measurement: '°C'
+    device_class: temperature
+    state_class: measurement
+
+  - platform: template
+    id: comfofond_temp_ground # PDO 417
+    name: 'ComfoFond Ground Temperature'
+    filters: [multiply: 0.1]
+    accuracy_decimals: 1
+    unit_of_measurement: '°C'
+    device_class: temperature
+    state_class: measurement
+
+  - platform: template
+    id: comfofond_ghe_state_perc # PDO 418
+    name: 'ComfoFond GHE State Percentage'
+    accuracy_decimals: 0
+    unit_of_measurement: '%'
+    state_class: measurement
+    filters: *throttle-filter
+
+  # - platform: template
+  #   id: comfocool_state # PDO 784
+  #   name: 'ComfoCool State'
+  #   accuracy_decimals: 0
+  #   unit_of_measurement: '%'
+  #   state_class: measurement
+  #   filters: *throttle-filter
+
+  - platform: template
+    id: comfocool_temp_condensor # PDO 802
+    name: 'ComfoCool Condensor Temperature'
+    filters: [multiply: 0.1]
+    accuracy_decimals: 1
+    unit_of_measurement: '°C'
+    device_class: temperature
+    state_class: measurement
 
 text_sensor:
+
+  - platform: template
+    id: manual_mode # PDO 56 (raw)
+    name: 'Manual Mode'
+    filters:
+      - map:
+        - 0 -> Unlimited Manual
+        - 255 -> Auto
+
+  - platform: template
+    id: supply_fan_mode_2 # PDO 70
+    name: 'Supply Fan Mode 2'
+    icon: mdi:arrow-split-vertical
+    filters:
+      - map:
+        - 0 -> Balanced
+        - 1 -> Supply Only
+
+  - platform: template
+    id: exhaust_fan_mode_2 # PDO 71
+    name: 'Exhaust Fan Mode 2'
+    icon: mdi:arrow-split-vertical
+    filters:
+      - map:
+        - 0 -> Balanced
+        - 1 -> Supply Only
+
+  - platform: template
+    id: supply_fan_next_change_in # PDO 86 (raw)
+    name: 'Supply Fan Next Change In'
+
+  - platform: template
+    id: exhaust_fan_next_change_in # PDO 87 (raw)
+    name: 'Exhaust Fan Next Change In'
+
+  - platform: template
+    id: comfortcontrol_mode # PDO 225 
+    name: 'Sensor based ventilation mode'
+    filters:
+      - map:
+        - 0 -> Disabled
+        - 1 -> Active
+        - 2 -> Overruling
+
   - platform: template
     id: airflow_constraints # PDO 230
     name: 'Airflow constraints'
@@ -128,3 +261,29 @@ text_sensor:
     # unit_of_measurement: '%'
     # state_class: measurement
 
+  - platform: template
+    id: supply_fan_mode_3 # PDO 342
+    name: 'Supply Fan Mode 3'
+    icon: mdi:arrow-split-vertical
+    filters:
+      - map:
+        - 0 -> Balanced
+        - 2 -> Supply Only
+
+  - platform: template
+    id: exhaust_fan_mode_3 # PDO 343
+    name: 'Exhaust Fan Mode 3'
+    icon: mdi:arrow-split-vertical
+    filters:
+      - map:
+        - 0 -> Balanced
+        - 2 -> Supply Only
+
+  - platform: template
+    id: comfofond_ghe_present # PDO 419 (raw)
+    name: 'ComfoFond GHE Present'
+    icon: mdi:arrow-split-vertical
+    filters:
+      - map:
+        - 0 -> absent
+        - 1 -> present
