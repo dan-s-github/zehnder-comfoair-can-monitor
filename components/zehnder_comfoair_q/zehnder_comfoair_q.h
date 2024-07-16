@@ -158,6 +158,87 @@ namespace zehnder_comfoair_q
             return output;
         }
 
+        static std::vector<int> uint_to_bits(uint64_t value) {
+            std::vector<int> bits;
+            int j = 0;
+            for (int i = 0; i < 64; ++i) {
+                if (value & (1ULL << i)) {  // Check if the i-th bit is set
+                    bits.push_back(j);
+                }
+                ++j;
+            }
+            return bits;
+        }
+
+        static std::vector<std::string> calculate_airflow_constraints(uint32_t value) {
+            // Convert value to bits
+            std::bitset<32> uint_to_bits(value);
+
+            // Check if 45 is in the bits
+            if (!bits.test(45))
+                return {}; // Return empty vector if 45 is not present
+
+            std::vector<std::string> constraints;
+
+            // Check each bit and add corresponding constraint to the vector
+            if (bits.test(2) || bits.test(3))
+                constraints.push_back("Resistance");
+            if (bits.test(4))
+                constraints.push_back("PreheaterNegative");
+            if (bits.test(5) || bits.test(7))
+                constraints.push_back("NoiseGuard");
+            if (bits.test(6) || bits.test(8))
+                constraints.push_back("ResistanceGuard");
+            if (bits.test(9))
+                constraints.push_back("FrostProtection");
+            if (bits.test(10))
+                constraints.push_back("Bypass");
+            if (bits.test(12))
+                constraints.push_back("AnalogInput1");
+            if (bits.test(13))
+                constraints.push_back("AnalogInput2");
+            if (bits.test(14))
+                constraints.push_back("AnalogInput3");
+            if (bits.test(15))
+                constraints.push_back("AnalogInput4");
+            if (bits.test(16))
+                constraints.push_back("Hood");
+            if (bits.test(18))
+                constraints.push_back("AnalogPreset");
+            if (bits.test(19))
+                constraints.push_back("ComfoCool");
+            if (bits.test(22))
+                constraints.push_back("PreheaterPositive");
+            if (bits.test(23))
+                constraints.push_back("RFSensorFlowPreset");
+            if (bits.test(24))
+                constraints.push_back("RFSensorFlowProportional");
+            if (bits.test(25))
+                constraints.push_back("TemperatureComfort");
+            if (bits.test(26))
+                constraints.push_back("HumidityComfort");
+            if (bits.test(27))
+                constraints.push_back("HumidityProtection");
+            if (bits.test(47))
+                constraints.push_back("CO2ZoneX1");
+            if (bits.test(48))
+                constraints.push_back("CO2ZoneX2");
+            if (bits.test(49))
+                constraints.push_back("CO2ZoneX3");
+            if (bits.test(50))
+                constraints.push_back("CO2ZoneX4");
+            if (bits.test(51))
+                constraints.push_back("CO2ZoneX5");
+            if (bits.test(52))
+                constraints.push_back("CO2ZoneX6");
+            if (bits.test(53))
+                constraints.push_back("CO2ZoneX7");
+            if (bits.test(54))
+                constraints.push_back("CO2ZoneX8");
+
+            return constraints;
+        }
+
     protected:
         Canbus *parent_ = nullptr;
 
