@@ -39,7 +39,7 @@ canbus:
                 comfoair_on_frame_case(225, id(comfoair), comfortcontrol_mode,          true);
                 comfoair_on_frame_case(226, id(comfoair), fan_speed_mode_modulated,     true);
                 comfoair_on_frame_case(229, id(comfoair), pdo_229,                      true);
-                comfoair_on_frame_case(230, id(comfoair), airflow_constraints,          true);
+                comfoair_on_frame_case(230, id(comfoair), airflow_constraints_raw,      true);
                 comfoair_on_frame_case(273, id(comfoair), pdo_273,                      true);
                 comfoair_on_frame_case(305, id(comfoair), supply_fan_power,             true);
                 comfoair_on_frame_case(306, id(comfoair), exhaust_fan_power,            true);

@@ -3,11 +3,17 @@
   - filter_out: nan
   - sliding_window_moving_average: {send_every: '${filter_send_every}', window_size: '${filter_window_size}'}
 
+.throttle-filter-e-1: &throttle-filter-e-1
+  - throttle_average: '${filter_time}'
+  - filter_out: nan
+  - sliding_window_moving_average: {send_every: '${filter_send_every}', window_size: '${filter_window_size}'}
+  - multiply: 0.1  
+
 binary_sensor:
-  - platform: template
-    id: manual_mode # PDO 56 (raw)
-    name: 'Manual Mode'
-    icon: mdi:check-circle
+  # - platform: template
+  #   id: manual_mode # PDO 56 (raw)
+  #   name: 'Manual Mode'
+  #   icon: mdi:check-circle
   - platform: template
     id: manual_mode_2 # PDO 72 (raw)
     name: 'Manual Mode 2'
@@ -74,6 +80,21 @@ sensor:
     # state_class: measurement
 
   - platform: template
+    id: airflow_constraints_raw # PDO 230
+    name: 'airflow_constraints_raw'
+    accuracy_decimals: 0
+    # internal: true
+    on_value:
+      then:
+        - lambda: |-
+            std::vector<std::string> constraints = id(comfoair)->calculate_airflow_constraints(x);
+            if (!constraints.empty()) {
+              id(airflow_constraints).publish_state(constraints[0]);
+            } else {
+              id(airflow_constraints).publish_state("");
+            }
+
+  - platform: template
     id: pdo_273 # PDO 273
     name: 'PDO 273 delta T?'
     filters: [multiply: 0.1]
@@ -89,8 +110,8 @@ sensor:
     unit_of_measurement: 'W'
     device_class: power
     state_class: measurement
-    filters: *throttle-filter
-
+    filters:  *throttle-filter-e-1
+ 
   - platform: template
     id: supply_fan_power # PDO 306
     name: 'Supply fan power'
@@ -98,8 +119,8 @@ sensor:
     unit_of_measurement: 'W'
     device_class: power
     state_class: measurement
-    filters: *throttle-filter
-
+    filters:  *throttle-filter-e-1
+ 
   - platform: template
     id: analog_input_0_10v_1 # PDO 369
     name: 'analog_input_0_10v_1'
@@ -257,9 +278,7 @@ text_sensor:
   - platform: template
     id: airflow_constraints # PDO 230
     name: 'Airflow constraints'
-    # accuracy_decimals: 0
-    # unit_of_measurement: '%'
-    # state_class: measurement
+    icon: mdi:fan-alert
 
   - platform: template
     id: supply_fan_mode_3 # PDO 342
