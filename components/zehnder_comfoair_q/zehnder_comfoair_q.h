@@ -181,63 +181,64 @@ namespace zehnder_comfoair_q
 
             // Check if 45 is in the bits
             if (bits[45] != 1)
-                return constraints; // Return empty vector if 45 is not present
-
-            // Check each bit and add corresponding constraint to the vector
-            if (bits[2] == 1 || bits[3] == 1)
-                constraints.push_back("Resistance");
-            if (bits[4] == 1)
-                constraints.push_back("PreheaterNegative");
-            if (bits[5] == 1 || bits[7] == 1)
-                constraints.push_back("NoiseGuard");
-            if (bits[6] == 1 || bits[8] == 1)
-                constraints.push_back("ResistanceGuard");
-            if (bits[9] == 1)
-                constraints.push_back("FrostProtection");
-            if (bits[10] == 1)
-                constraints.push_back("Bypass");
-            if (bits[12] == 1)
-                constraints.push_back("AnalogInput1");
-            if (bits[13] == 1)
-                constraints.push_back("AnalogInput2");
-            if (bits[14] == 1)
-                constraints.push_back("AnalogInput3");
-            if (bits[15] == 1)
-                constraints.push_back("AnalogInput4");
-            if (bits[16] == 1)
-                constraints.push_back("Hood");
-            if (bits[18] == 1)
-                constraints.push_back("AnalogPreset");
-            if (bits[19] == 1)
-                constraints.push_back("ComfoCool");
-            if (bits[22] == 1)
-                constraints.push_back("PreheaterPositive");
-            if (bits[23] == 1)
-                constraints.push_back("RFSensorFlowPreset");
-            if (bits[24] == 1)
-                constraints.push_back("RFSensorFlowProportional");
-            if (bits[25] == 1)
-                constraints.push_back("TemperatureComfort");
-            if (bits[26] == 1)
-                constraints.push_back("HumidityComfort");
-            if (bits[27] == 1)
-                constraints.push_back("HumidityProtection");
-            if (bits[47] == 1)
-                constraints.push_back("CO2ZoneX1");
-            if (bits[48] == 1)
-                constraints.push_back("CO2ZoneX2");
-            if (bits[49] == 1)
-                constraints.push_back("CO2ZoneX3");
-            if (bits[50] == 1)
-                constraints.push_back("CO2ZoneX4");
-            if (bits[51] == 1)
-                constraints.push_back("CO2ZoneX5");
-            if (bits[52] == 1)
-                constraints.push_back("CO2ZoneX6");
-            if (bits[53] == 1)
-                constraints.push_back("CO2ZoneX7");
-            if (bits[54] == 1)
-                constraints.push_back("CO2ZoneX8");
+                constraints.push_back(""); // Return empty vector if 45 is not present
+            else {
+                // Check each bit and add corresponding constraint to the vector
+                if (bits[2] == 1 || bits[3] == 1)
+                    constraints.push_back("Resistance");
+                if (bits[4] == 1)
+                    constraints.push_back("PreheaterNegative");
+                if (bits[5] == 1 || bits[7] == 1)
+                    constraints.push_back("NoiseGuard");
+                if (bits[6] == 1 || bits[8] == 1)
+                    constraints.push_back("ResistanceGuard");
+                if (bits[9] == 1)
+                    constraints.push_back("FrostProtection");
+                if (bits[10] == 1)
+                    constraints.push_back("Bypass");
+                if (bits[12] == 1)
+                    constraints.push_back("AnalogInput1");
+                if (bits[13] == 1)
+                    constraints.push_back("AnalogInput2");
+                if (bits[14] == 1)
+                    constraints.push_back("AnalogInput3");
+                if (bits[15] == 1)
+                    constraints.push_back("AnalogInput4");
+                if (bits[16] == 1)
+                    constraints.push_back("Hood");
+                if (bits[18] == 1)
+                    constraints.push_back("AnalogPreset");
+                if (bits[19] == 1)
+                    constraints.push_back("ComfoCool");
+                if (bits[22] == 1)
+                    constraints.push_back("PreheaterPositive");
+                if (bits[23] == 1)
+                    constraints.push_back("RFSensorFlowPreset");
+                if (bits[24] == 1)
+                    constraints.push_back("RFSensorFlowProportional");
+                if (bits[25] == 1)
+                    constraints.push_back("TemperatureComfort");
+                if (bits[26] == 1)
+                    constraints.push_back("HumidityComfort");
+                if (bits[27] == 1)
+                    constraints.push_back("HumidityProtection");
+                if (bits[47] == 1)
+                    constraints.push_back("CO2ZoneX1");
+                if (bits[48] == 1)
+                    constraints.push_back("CO2ZoneX2");
+                if (bits[49] == 1)
+                    constraints.push_back("CO2ZoneX3");
+                if (bits[50] == 1)
+                    constraints.push_back("CO2ZoneX4");
+                if (bits[51] == 1)
+                    constraints.push_back("CO2ZoneX5");
+                if (bits[52] == 1)
+                    constraints.push_back("CO2ZoneX6");
+                if (bits[53] == 1)
+                    constraints.push_back("CO2ZoneX7");
+                if (bits[54] == 1)
+                    constraints.push_back("CO2ZoneX8");
+            }
 
             return constraints;
         }

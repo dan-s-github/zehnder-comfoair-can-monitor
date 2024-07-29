@@ -79,20 +79,20 @@ sensor:
     # unit_of_measurement: '%'
     # state_class: measurement
 
-  - platform: template
-    id: airflow_constraints_raw # PDO 230
-    name: 'airflow_constraints_raw'
-    accuracy_decimals: 0
-    # internal: true
-    on_value:
-      then:
-        - lambda: |-
-            std::vector<std::string> constraints = id(comfoair)->calculate_airflow_constraints(x);
-            if (!constraints.empty()) {
-              id(airflow_constraints).publish_state(constraints[0]);
-            } else {
-              id(airflow_constraints).publish_state("");
-            }
+  # - platform: template
+  #   id: airflow_constraints_raw # PDO 230
+  #   name: 'airflow_constraints_raw'
+  #   accuracy_decimals: 0
+  #   # internal: true
+  #   on_value:
+  #     then:
+  #       - lambda: |-
+  #           std::vector<std::string> constraints = id(comfoair)->calculate_airflow_constraints(x);
+  #           if (!constraints.empty()) {
+  #             id(airflow_constraints).publish_state(constraints[0]);
+  #           } else {
+  #             id(airflow_constraints).publish_state("");
+  #           }
 
   - platform: template
     id: pdo_273 # PDO 273
@@ -275,10 +275,10 @@ text_sensor:
         - 1 -> Active
         - 2 -> Overruling
 
-  - platform: template
-    id: airflow_constraints # PDO 230
-    name: 'Airflow constraints'
-    icon: mdi:fan-alert
+  # - platform: template
+  #   id: airflow_constraints # PDO 230
+  #   name: 'Airflow constraints'
+  #   icon: mdi:fan-alert
 
   - platform: template
     id: supply_fan_mode_3 # PDO 342
