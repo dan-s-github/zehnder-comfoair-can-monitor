@@ -1,6 +1,8 @@
 #pragma once
 
 #include <esphome.h>
+#include <iomanip>
+#include <sstream>
 
 using namespace esphome; // needed for ESP_LOGx to work
 using namespace esphome::canbus;
@@ -241,6 +243,14 @@ namespace zehnder_comfoair_q
             }
 
             return constraints;
+        }
+
+        static std::string format_float_as_hex(float value) 
+        {
+            std::stringstream ss;
+            ss << std::hex << std::setw(sizeof(value) * 2) << std::setfill('0');
+            ss << *reinterpret_cast<const uint32_t*>(&value);
+            return ss.str();
         }
 
     protected:
