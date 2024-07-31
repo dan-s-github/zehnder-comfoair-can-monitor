@@ -12,6 +12,7 @@ ZehnderComfoAirQ = zehnder_comfoair_q_ns.class_("ZehnderComfoAirQ", cg.Component
 CONF_REQUEST_INTERVAL = "request_interval"
 CONF_REQUEST_IDS = "request_ids"
 CONF_REQUEST_DELAY = "request_delay"
+CONF_STARTUP_DELAY = "startup_delay"
 CONF_REQUEST_LOCAL_NODE_ID = "local_node_id"
 
 
@@ -25,6 +26,7 @@ CONFIG_SCHEMA = (
                 cv.int_range(min=0, max=0x3ff),
             ),
             cv.Optional(CONF_REQUEST_DELAY, default="100ms"): cv.positive_time_period_milliseconds,
+            cv.Optional(CONF_STARTUP_DELAY, default="30s"): cv.positive_time_period_seconds,
             cv.Optional(CONF_REQUEST_LOCAL_NODE_ID, default=0x2a): cv.int_range(min=0x01, max=0x3f),
         }
     )
@@ -43,4 +45,5 @@ async def to_code(config):
     cg.add(var.set_update_interval(config[CONF_REQUEST_INTERVAL]))
     cg.add(var.set_request_ids(config[CONF_REQUEST_IDS]))
     cg.add(var.set_request_delay(config[CONF_REQUEST_DELAY]))
+    cg.add(var.set_startup_delay(config[CONF_STARTUP_DELAY]))
     cg.add(var.set_local_node_id(config[CONF_REQUEST_LOCAL_NODE_ID]))
