@@ -44,14 +44,17 @@ namespace zehnder_comfoair_q
     public:
         void setup() override;
         void update() override;
+        // float get_setup_priority() const override;
+        float get_setup_priority() const override { return esphome::setup_priority::LATE; }
+
 
         void set_parent(Canbus *parent) { parent_ = parent; }
         void set_request_ids(const std::vector<uint16_t> request_ids) { request_ids_ = request_ids; }
         void set_request_delay(uint32_t request_delay) { request_delay_ = request_delay; }
+        void set_setup_priority(float setup_priority) { setup_priority_ = setup_priority; }
         void set_startup_delay(uint32_t startup_delay) { startup_delay_ = startup_delay; }
         void set_local_node_id(uint8_t local_node_id) { local_node_id_ = local_node_id; }
 
-        void startup();
         void request_all_pdos();
         void request_pdo(uint16_t pdo_id);
 
@@ -259,6 +262,7 @@ namespace zehnder_comfoair_q
         Canbus *parent_ = nullptr;
 
         std::vector<uint16_t> request_ids_{};
+        float setup_priority_;
         uint32_t request_delay_;
         uint32_t startup_delay_;
         int request_next_pdo_pos_ = 0;

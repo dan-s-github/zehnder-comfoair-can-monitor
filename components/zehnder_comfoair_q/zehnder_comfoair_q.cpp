@@ -2,17 +2,15 @@
 
 namespace zehnder_comfoair_q
 {
+    // float ZehnderComfoAirQ::get_setup_priority() const 
+    // { 
+    //     return this->setup_priority_;
+    // }
+
     void ZehnderComfoAirQ::setup()
     {
         // do a first request of all PDOs some time after starting (helpful for long intervals)
         this->set_timeout(1000 * 10, [this]()
-                          { this->startup(); });
-    }
-
-    void ZehnderComfoAirQ::startup()
-    {
-        // do a first request of all PDOs some time after starting and startup_delay
-        this->set_timeout(this->startup_delay_, [this]()
                           { this->update(); });
     }
 

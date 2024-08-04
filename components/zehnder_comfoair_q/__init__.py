@@ -13,6 +13,7 @@ CONF_REQUEST_INTERVAL = "request_interval"
 CONF_REQUEST_IDS = "request_ids"
 CONF_REQUEST_DELAY = "request_delay"
 CONF_STARTUP_DELAY = "startup_delay"
+CONF_SETUP_PRIORITY = "setup_priority"
 CONF_REQUEST_LOCAL_NODE_ID = "local_node_id"
 
 
@@ -21,6 +22,7 @@ CONFIG_SCHEMA = (
         {
             cv.GenerateID(): cv.declare_id(ZehnderComfoAirQ),
             cv.GenerateID(CONF_CANBUS_ID): cv.use_id(CanbusComponent),
+            cv.Optional(CONF_SETUP_PRIORITY, default=600): cv.float_,
             cv.Optional(CONF_REQUEST_INTERVAL, default="1h"): cv.update_interval,
             cv.Optional(CONF_REQUEST_IDS, default={}): cv.ensure_list(
                 cv.int_range(min=0, max=0x3ff),
@@ -45,5 +47,6 @@ async def to_code(config):
     cg.add(var.set_update_interval(config[CONF_REQUEST_INTERVAL]))
     cg.add(var.set_request_ids(config[CONF_REQUEST_IDS]))
     cg.add(var.set_request_delay(config[CONF_REQUEST_DELAY]))
+    cg.add(var.set_setup_priority(config[CONF_SETUP_PRIORITY]))
     cg.add(var.set_startup_delay(config[CONF_STARTUP_DELAY]))
     cg.add(var.set_local_node_id(config[CONF_REQUEST_LOCAL_NODE_ID]))
